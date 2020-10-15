@@ -28,6 +28,174 @@ void main() {
   testDirectory('common_mark');
   testDirectory('gfm', extensionSet: ExtensionSet.gitHubFlavored);
 
+  group('Checklist 1', () {
+    validateCore(
+        'Checklist',
+        '''
+First.
+* [ ] Item 1
+* [x] Item 2
+  * [ ]  Item 3
+  * [ ] Item 4
+    * [ ] Item 5
+  * [ ] Item 6
+* [ ] Item 7
+  * [ ] Item 8
+* [x] Item 9
+
+Others
+''',
+        '''
+<p>First.</p>
+<ul>
+<li class="todo"><input disabled="disabled" class="todo" type="checkbox" /> Item 1</li>
+<li class="todo"><input checked="checked" disabled="disabled" class="todo" type="checkbox" /> Item 2
+<ul>
+<li class="todo"><input disabled="disabled" class="todo" type="checkbox" />  Item 3</li>
+<li class="todo"><input disabled="disabled" class="todo" type="checkbox" /> Item 4
+<ul>
+<li class="todo"><input disabled="disabled" class="todo" type="checkbox" /> Item 5</li>
+</ul>
+</li>
+<li class="todo"><input disabled="disabled" class="todo" type="checkbox" /> Item 6</li>
+</ul>
+</li>
+<li class="todo"><input disabled="disabled" class="todo" type="checkbox" /> Item 7
+<ul>
+<li class="todo"><input disabled="disabled" class="todo" type="checkbox" /> Item 8</li>
+</ul>
+</li>
+<li class="todo"><input checked="checked" disabled="disabled" class="todo" type="checkbox" /> Item 9</li>
+</ul>
+<p>Others</p>
+''');
+    });
+
+  group('Checklist 1 with data-line', () {
+    validateCore(
+        'Checklist',
+        '''
+First.
+* [ ] Item 1
+* [x] Item 2
+  * [ ]  Item 3
+  * [ ] Item 4
+    * [ ] Item 5
+  * [ ] Item 6
+* [ ] Item 7
+  * [ ] Item 8
+* [x] Item 9
+
+Others
+''',
+        '''
+<p>First.</p>
+<ul>
+<li class="todo"><input data-line="1" class="todo" type="checkbox" /> Item 1</li>
+<li class="todo"><input checked="checked" data-line="2" class="todo" type="checkbox" /> Item 2
+<ul>
+<li class="todo"><input data-line="3" class="todo" type="checkbox" />  Item 3</li>
+<li class="todo"><input data-line="4" class="todo" type="checkbox" /> Item 4
+<ul>
+<li class="todo"><input data-line="5" class="todo" type="checkbox" /> Item 5</li>
+</ul>
+</li>
+<li class="todo"><input data-line="6" class="todo" type="checkbox" /> Item 6</li>
+</ul>
+</li>
+<li class="todo"><input data-line="7" class="todo" type="checkbox" /> Item 7
+<ul>
+<li class="todo"><input data-line="8" class="todo" type="checkbox" /> Item 8</li>
+</ul>
+</li>
+<li class="todo"><input checked="checked" data-line="9" class="todo" type="checkbox" /> Item 9</li>
+</ul>
+<p>Others</p>
+''', checkable: true); //data-line will be generated instead
+    });
+
+  group('Checklist', () {
+    validateCore(
+        'Checklist 2',
+        '''
+First.
+1. [ ] Item 1
+1. Item 2
+    * [ ]  Item 3
+    * [ ] Item 4
+        * [x] Item 5
+    * Item 6
+1. [ ] Item 7
+    * Item 8
+1. Item 9
+
+Others
+''',
+        '''
+<p>First.</p>
+<ol>
+<li class="todo"><input disabled="disabled" class="todo" type="checkbox" /> Item 1</li>
+<li>Item 2
+<ul>
+<li class="todo"><input disabled="disabled" class="todo" type="checkbox" />  Item 3</li>
+<li class="todo"><input disabled="disabled" class="todo" type="checkbox" /> Item 4
+<ul>
+<li class="todo"><input checked="checked" disabled="disabled" class="todo" type="checkbox" /> Item 5</li>
+</ul>
+</li>
+<li>Item 6</li>
+</ul>
+</li>
+<li class="todo"><input disabled="disabled" class="todo" type="checkbox" /> Item 7
+<ul>
+<li>Item 8</li>
+</ul>
+</li>
+<li>Item 9</li>
+</ol>
+<p>Others</p>
+''');
+    });
+
+    validateCore(
+        'Checklist 3',
+        '''
+- [ ] AA [ ] b
+- [ ] BB 
+- [ ]  
+- [ ] 
+''',
+        '''
+<ul>
+<li class="todo"><input disabled="disabled" class="todo" type="checkbox" /> AA [ ] b</li>
+<li class="todo"><input disabled="disabled" class="todo" type="checkbox" /> BB </li>
+<li>[ ]  </li>
+<li>[ ] </li>
+</ul>
+''');
+
+    validateCore(
+        'Checklist 4',
+        '''
+* [ ] Item 1
+    * 1.1
+
+* [x] Item 2
+''',
+        '''
+<ul>
+<li class="todo">
+<p><input disabled="disabled" class="todo" type="checkbox" /> Item 1</p>
+<ul>
+<li>1.1</li>
+</ul>
+</li>
+<li class="todo">
+<p><input checked="checked" disabled="disabled" class="todo" type="checkbox" /> Item 2</p>
+</li>
+</ul>
+''');
+
   group('Corner cases', () {
     validateCore('Incorrect Links', '''
 5 Ethernet ([Music](
@@ -48,6 +216,17 @@ void main() {
 <p>"Connecting dot <strong>A</strong> to <strong>B.</strong>…"</p>
 ''');
   });
+
+  group('Corner cases', () {
+    validateCore(
+        'Incorrect Links',
+        '''
+5 Ethernet ([Music](
+''',
+        '''
+<p>5 Ethernet ([Music](</p>
+''');
+    });
 
   group('Resolver', () {
     Node nyanResolver(String text, [_]) =>

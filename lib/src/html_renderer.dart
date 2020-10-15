@@ -19,6 +19,7 @@ String markdownToHtml(
   Resolver linkResolver,
   Resolver imageLinkResolver,
   bool inlineOnly = false,
+  bool checkable = false
 }) {
   var document = Document(
     blockSyntaxes: blockSyntaxes,
@@ -26,6 +27,7 @@ String markdownToHtml(
     extensionSet: extensionSet,
     linkResolver: linkResolver,
     imageLinkResolver: imageLinkResolver,
+    checkable: checkable
   );
 
   if (inlineOnly) return renderToHtml(document.parseInline(markdown));

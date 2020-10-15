@@ -13,7 +13,7 @@ class Document {
   final ExtensionSet extensionSet;
   final Resolver linkResolver;
   final Resolver imageLinkResolver;
-  final bool encodeHtml;
+  final bool encodeHtml, checkable;
   final _blockSyntaxes = <BlockSyntax>{};
   final _inlineSyntaxes = <InlineSyntax>{};
 
@@ -28,6 +28,7 @@ class Document {
     this.linkResolver,
     this.imageLinkResolver,
     this.encodeHtml = true,
+    this.checkable = false
   }) : extensionSet = extensionSet ?? ExtensionSet.commonMark {
     _blockSyntaxes
       ..addAll(blockSyntaxes ?? [])
@@ -38,8 +39,9 @@ class Document {
   }
 
   /// Parses the given [lines] of Markdown to a series of AST nodes.
-  List<Node> parseLines(List<String> lines) {
-    var nodes = BlockParser(lines, this).parseLines();
+  List<Node> parseLines(List<String> lines, [int offset=0]) {
+    var parser = BlockParser(lines, this)..offset = offset;
+    var nodes = parser.parseLines();
     _parseInlineContent(nodes);
     return nodes;
   }
