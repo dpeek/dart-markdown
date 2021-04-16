@@ -2,7 +2,7 @@
 //
 // This file was generated from emojilib's emoji data file:
 // https://raw.githubusercontent.com/muan/emojilib/v2.4.0/emojis.json
-// at 2021-03-03 14:53:46.512143 by the script, tool/update_emojis.dart.
+// at 2021-03-16 11:04:10.734517 by the script, tool/update_emojis.dart.
 
 const emojis = <String, String>{
   'grinning': '😀',

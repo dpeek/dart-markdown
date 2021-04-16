@@ -13,11 +13,11 @@ Future<void> main() async {
   var client = HttpClient();
   var request = await client.getUrl(Uri.parse(_emojisJsonRawUrl));
   var response = await request.close();
-  var json = jsonDecode(
+  var rawJson = jsonDecode(
           await response.cast<List<int>>().transform(utf8.decoder).join(''))
-      .map((String alias, dynamic info) =>
-          MapEntry(alias, info.cast<String, dynamic>()))
-      .cast<String, Map<String, dynamic>>();
+      as Map<String, dynamic>;
+  var json = rawJson.map((String alias, dynamic info) =>
+      MapEntry(alias, (info as Map).cast<String, dynamic>()));
   var emojisContent = StringBuffer('''
 // GENERATED FILE. DO NOT EDIT.
 //

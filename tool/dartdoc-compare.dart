@@ -133,11 +133,11 @@ class DartdocCompare {
     dartdocPubspec = jsonDecode(jsonEncode(dartdocPubspec)) as Map;
 
     if (markdownRef == 'local') {
-      dartdocPubspec['dependencies']['markdown'] = {
+      (dartdocPubspec['dependencies'] as Map)['markdown'] = {
         'path': markdownPath,
       };
     } else {
-      dartdocPubspec['dependencies']['markdown'] = {
+      (dartdocPubspec['dependencies'] as Map)['markdown'] = {
         'git': {
           'url': 'git://github.com/dart-lang/markdown.git',
           'ref': markdownRef

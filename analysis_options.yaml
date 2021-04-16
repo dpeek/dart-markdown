@@ -15,6 +15,7 @@ analyzer:
     unsafe_html: ignore
 linter:
   rules:
+    - avoid_dynamic_calls
     - camel_case_types
     # https://github.com/dart-lang/linter/issues/574
     #- comment_references

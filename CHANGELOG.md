@@ -1,7 +1,5 @@
 ## 4.0.1-dev
 
-* Enforce lint rules found in pedantic 1.11.0.
-
 ## 4.0.0
 
 * Stable null safety release.
